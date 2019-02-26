@@ -14,7 +14,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -71,12 +73,38 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
         float zoomLevel = 19.0f;
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(q.getDouble("lat"),q.getDouble("long"));
+        final LatLng sydney = new LatLng(q.getDouble("lat"),q.getDouble("long"));
+
+        LatLngBounds.Builder b = new LatLngBounds.Builder();
+        b.include(sydney);
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(b.build(),  20);
+        mMap.animateCamera(cu,10, new GoogleMap.CancelableCallback() {
+            @Override
+            public void onFinish() {
+                CameraPosition cp = new CameraPosition.Builder()
+                        .zoom(mMap.getCameraPosition().zoom)
+                        .target(sydney)
+                        .tilt(70.0f)
+                        .bearing(35.0f)
+                        .build();
+                mMap.addMarker(new MarkerOptions().position(sydney).title("Marker PATRIA"));
+                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cp));
 
 
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker PATRIA"));
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,20));
+
+
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+        });
+
+
+
+
 
     }
     @Override
