@@ -72,8 +72,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
         float zoomLevel = 19.0f;
-        // Add a marker in Sydney and move the camera
+        // Add a marker in Sydney and move the cameraffff
         final LatLng sydney = new LatLng(q.getDouble("lat"),q.getDouble("long"));
+
 
         LatLngBounds.Builder b = new LatLngBounds.Builder();
         b.include(sydney);
