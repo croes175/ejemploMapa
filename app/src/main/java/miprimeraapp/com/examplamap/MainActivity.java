@@ -2,6 +2,7 @@ package miprimeraapp.com.examplamap;
 
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -39,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
         btnLoc = (Button) findViewById(R.id.pedir);
         ActivityCompat.requestPermissions(MainActivity.this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET}, 123);
         GpsTracker gt = new GpsTracker(getApplicationContext());
+
+
         Location l = gt.getLocation();
        if(l!=null){
        lat= l.getLatitude();
@@ -48,16 +51,25 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 GpsTracker gt = new GpsTracker(getApplicationContext());
+
+
                 Location l = gt.getLocation();
                 Log.e("fist","error");
-                if( l == null){
-                    Toast.makeText(getApplicationContext(),"GPS unable to get Value",Toast.LENGTH_SHORT).show();
+                if( !gt.isGPSEnabled){
+                    Toast.makeText(getApplicationContext(),"Habilitar  el Gps",Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                     startActivity(i);
                 }else {
+                    if(l!=null){
                     double lat = l.getLatitude();
                     double lon = l.getLongitude();
-                    Toast.makeText(getApplicationContext(),"GPS Lat = "+lat+"\n lon = "+lon,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"GPS Lat = "+lat+"\n lon = "+lon,Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(),"Activado pero buscando",Toast.LENGTH_SHORT).show();
+
+
+                    }
                 }
             }
         });

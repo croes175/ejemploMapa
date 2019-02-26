@@ -18,10 +18,12 @@ import static android.content.Context.LOCATION_SERVICE;
 public class GpsTracker implements LocationListener {
 
     Context context;
+    public  boolean isGPSEnabled;
 
     public  GpsTracker(Context context)
     {super();
     this.context=context;
+    isGPSEnabled=false;
 
 
     }
@@ -32,7 +34,7 @@ public Location getLocation()
 }
     try {
         LocationManager lm = (LocationManager) context.getSystemService(LOCATION_SERVICE);
-        boolean isGPSEnabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        isGPSEnabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
         if (isGPSEnabled){
             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 6000,10,this);
             Location loc = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
